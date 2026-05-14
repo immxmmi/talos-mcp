@@ -3,6 +3,7 @@ package talos
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"strings"
 
 	"github.com/mark3labs/mcp-go/mcp"
@@ -75,6 +76,15 @@ func (c *Client) withNodes(ctx context.Context, nodes string) context.Context {
 		return talosclient.WithNodes(ctx, targets...)
 	}
 	return ctx
+}
+
+// Ping validates the connection by fetching the Talos version from the configured nodes.
+func (c *Client) Ping() error {
+	ctx := c.withNodes(context.Background(), "")
+	if _, err := c.c.Version(ctx); err != nil {
+		return fmt.Errorf("Talos connection test failed: %w", err)
+	}
+	return nil
 }
 
 func protoResult(msg proto.Message) (*mcp.CallToolResult, error) {

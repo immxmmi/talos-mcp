@@ -24,6 +24,10 @@ func main() {
 	}
 	defer client.Close()
 
+	if err := client.Ping(); err != nil {
+		log.Fatalf("talos: %v", err)
+	}
+
 	s := server.NewMCPServer("talos-mcp", "1.0.0")
 	talos.RegisterTools(s, client)
 
