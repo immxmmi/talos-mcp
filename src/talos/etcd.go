@@ -63,6 +63,7 @@ func registerEtcd(s *server.MCPServer, c *Client) {
 			mcp.WithString("nodes", mcp.Required(), mcp.Description("Comma-separated node addresses")),
 		),
 		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			if r, ok := c.guardExec(); !ok { return r, nil }
 			nodes, _ := req.Params.Arguments["nodes"].(string)
 			ctx = c.withNodes(ctx, nodes)
 			resp, err := c.c.EtcdDefragment(ctx)

@@ -11,6 +11,7 @@ type Config struct {
 	Context     string
 	Endpoints   []string
 	Nodes       []string
+	Perms       Permissions
 }
 
 func Load() (*Config, error) {
@@ -42,5 +43,34 @@ func Load() (*Config, error) {
 		}
 	}
 
+	cfg.Perms = loadPermissions()
 	return cfg, nil
+}
+
+// Permissions controls which categories of operations the MCP server may perform.
+// Set MCP_READ_ONLY=true to disable all writes/deletes/actions.
+// Fine-grained overrides: MCP_ALLOW_WRITE, MCP_ALLOW_DELETE, MCP_ALLOW_EXEC (values: true/false).
+type Permissions struct {
+	AllowWrite  bool
+	AllowDelete bool
+	AllowExec   bool
+}
+
+func loadPermissions() Permissions {
+	readOnly := os.Getenv("MCP_READ_ONLY") == "true"
+	p := Permissions{
+		AllowWrite:  !readOnly,
+		AllowDelete: !readOnly,
+		AllowExec:   !readOnly,
+	}
+	if v := os.Getenv("MCP_ALLOW_WRITE"); v != "" {
+		p.AllowWrite = v == "true"
+	}
+	if v := os.Getenv("MCP_ALLOW_DELETE"); v != "" {
+		p.AllowDelete = v == "true"
+	}
+	if v := os.Getenv("MCP_ALLOW_EXEC"); v != "" {
+		p.AllowExec = v == "true"
+	}
+	return p
 }

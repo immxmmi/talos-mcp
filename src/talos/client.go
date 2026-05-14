@@ -16,6 +16,7 @@ import (
 type Client struct {
 	c            *talosclient.Client
 	defaultNodes []string
+	perms        config.Permissions
 }
 
 func NewClient(cfg *config.Config) (*Client, error) {
@@ -43,7 +44,15 @@ func NewClient(cfg *config.Config) (*Client, error) {
 	return &Client{
 		c:            c,
 		defaultNodes: cfg.Nodes,
+		perms:        cfg.Perms,
 	}, nil
+}
+
+func (c *Client) guardExec() (*mcp.CallToolResult, bool) {
+	if !c.perms.AllowExec {
+		return mcp.NewToolResultError("exec/action operations are disabled (set MCP_ALLOW_EXEC=true or unset MCP_READ_ONLY)"), false
+	}
+	return nil, true
 }
 
 func (c *Client) Close() {

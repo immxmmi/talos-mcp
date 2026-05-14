@@ -33,6 +33,7 @@ func registerNodes(s *server.MCPServer, c *Client) {
 			mcp.WithBoolean("powercycle", mcp.Description("Use powercycle mode instead of soft reboot (default false)")),
 		),
 		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			if r, ok := c.guardExec(); !ok { return r, nil }
 			nodes, _ := req.Params.Arguments["nodes"].(string)
 			powercycle, _ := req.Params.Arguments["powercycle"].(bool)
 			ctx = c.withNodes(ctx, nodes)
@@ -57,6 +58,7 @@ func registerNodes(s *server.MCPServer, c *Client) {
 			mcp.WithBoolean("force", mcp.Description("Force shutdown even if processes are running")),
 		),
 		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			if r, ok := c.guardExec(); !ok { return r, nil }
 			nodes, _ := req.Params.Arguments["nodes"].(string)
 			force, _ := req.Params.Arguments["force"].(bool)
 			ctx = c.withNodes(ctx, nodes)
@@ -84,6 +86,7 @@ func registerNodes(s *server.MCPServer, c *Client) {
 			mcp.WithBoolean("force", mcp.Description("Force upgrade, bypassing version checks")),
 		),
 		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			if r, ok := c.guardExec(); !ok { return r, nil }
 			nodes, _ := req.Params.Arguments["nodes"].(string)
 			image, _ := req.Params.Arguments["image"].(string)
 			preserve, _ := req.Params.Arguments["preserve"].(bool)

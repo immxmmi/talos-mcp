@@ -35,6 +35,7 @@ func registerServices(s *server.MCPServer, c *Client) {
 			mcp.WithString("service", mcp.Required(), mcp.Description("Service name (e.g. kubelet, etcd)")),
 		),
 		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			if r, ok := c.guardExec(); !ok { return r, nil }
 			nodes, _ := req.Params.Arguments["nodes"].(string)
 			service, _ := req.Params.Arguments["service"].(string)
 			ctx = c.withNodes(ctx, nodes)
@@ -53,6 +54,7 @@ func registerServices(s *server.MCPServer, c *Client) {
 			mcp.WithString("service", mcp.Required(), mcp.Description("Service name")),
 		),
 		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			if r, ok := c.guardExec(); !ok { return r, nil }
 			nodes, _ := req.Params.Arguments["nodes"].(string)
 			service, _ := req.Params.Arguments["service"].(string)
 			ctx = c.withNodes(ctx, nodes)
@@ -71,6 +73,7 @@ func registerServices(s *server.MCPServer, c *Client) {
 			mcp.WithString("service", mcp.Required(), mcp.Description("Service name")),
 		),
 		func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			if r, ok := c.guardExec(); !ok { return r, nil }
 			nodes, _ := req.Params.Arguments["nodes"].(string)
 			service, _ := req.Params.Arguments["service"].(string)
 			ctx = c.withNodes(ctx, nodes)
