@@ -1,0 +1,21 @@
+# Build output
+bin/
+
+# Go cache / test cache
+.gocache/
+
+# Local environment
+.env
+
+# macOS
+.DS_Store
+
+# Editor/IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Temp / logs
+*.tmp
+*.log

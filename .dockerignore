@@ -1,0 +1,15 @@
+# VCS
+.git
+.gitignore
+
+# Local env / docs / local artifacts
+.env
+.gocache
+bin
+
+# Editor/IDE
+.idea
+.vscode
+
+# OS junk
+.DS_Store
