@@ -1,4 +1,4 @@
-.PHONY: build run tidy test clean docker
+.PHONY: build run tidy test clean docker docker-run
 
 build:
 	cd src && go build -o ../bin/talos-mcp .
@@ -17,3 +17,9 @@ clean:
 
 docker:
 	docker build -t talos-mcp:latest .
+
+docker-run:
+	docker run --rm \
+		$(shell test -f .env && echo --env-file .env) \
+		-v $(HOME)/.talos:/root/.talos:ro \
+		talos-mcp:latest

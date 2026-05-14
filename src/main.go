@@ -31,6 +31,7 @@ func main() {
 	s := server.NewMCPServer("talos-mcp", "1.0.0")
 	talos.RegisterTools(s, client)
 
+	log.Printf("talos-mcp: ready, listening on stdio")
 	if err := server.ServeStdio(s); err != nil {
 		log.Fatalf("server error: %v", err)
 	}

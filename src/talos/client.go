@@ -2,7 +2,6 @@ package talos
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -89,14 +88,6 @@ func (c *Client) Ping() error {
 
 func protoResult(msg proto.Message) (*mcp.CallToolResult, error) {
 	b, err := protojson.MarshalOptions{EmitUnpopulated: false}.Marshal(msg)
-	if err != nil {
-		return mcp.NewToolResultError(err.Error()), nil
-	}
-	return mcp.NewToolResultText(string(b)), nil
-}
-
-func jsonResult(v any) (*mcp.CallToolResult, error) {
-	b, err := json.MarshalIndent(v, "", "  ")
 	if err != nil {
 		return mcp.NewToolResultError(err.Error()), nil
 	}
