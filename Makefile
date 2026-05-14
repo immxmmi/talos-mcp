@@ -19,7 +19,7 @@ docker:
 	docker build -t talos-mcp:latest .
 
 docker-run:
-	docker run --rm \
+	docker run --rm -i \
 		$(shell test -f .env && echo --env-file .env) \
 		-v $(HOME)/.talos:/root/.talos:ro \
 		talos-mcp:latest
